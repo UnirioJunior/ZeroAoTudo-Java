@@ -1,5 +1,12 @@
 package com.unirio.Meu.Projeto.Entities;
 
+import java.util.Objects;
+
+import org.springframework.beans.BeanUtils;
+
+import com.unirio.Meu.Projeto.DataTransferObject.DepartmentsDTO;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -13,9 +20,15 @@ public class DepartmentEntities {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	@Column(nullable = false, name = "department_name")
 	private String name;
 	
+	public DepartmentEntities(DepartmentsDTO departamento) {
+		BeanUtils.copyProperties(departamento, this);
+	}
+	
 	public DepartmentEntities() {
+		
 	}
 
 	public Long getId() {
@@ -33,4 +46,23 @@ public class DepartmentEntities {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		DepartmentEntities other = (DepartmentEntities) obj;
+		return Objects.equals(id, other.id);
+	}
+	
+	
 }
